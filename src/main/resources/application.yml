@@ -1,0 +1,13 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/api_board?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: hanif1293@
+  jpa:
+    hibernate:
+      ddl-auto: create # 운영시에는 validate 추천
+    show-sql: true
+    generate-ddl: false
