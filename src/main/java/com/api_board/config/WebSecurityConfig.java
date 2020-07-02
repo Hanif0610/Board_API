@@ -15,7 +15,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable();
+                .csrf().disable()
+                .formLogin().disable()
+                .authorizeRequests()
+                    .anyRequest().permitAll()
+                .and()
+                .httpBasic();
     }
 
     @Bean
