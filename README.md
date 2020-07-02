@@ -1,1 +1,2 @@
-Board_API
+# Board_API
+### 게시판 로직을 구현하는 곳입니다.
