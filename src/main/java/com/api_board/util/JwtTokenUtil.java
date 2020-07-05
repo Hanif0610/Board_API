@@ -21,8 +21,8 @@ public class JwtTokenUtil {
         return Jwts.builder()
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + (1000L * 3600 * 24)))
-                .setHeaderParam("type", "JWT")
-                .claim("user_id", data)
+                .setHeaderParam("typ", "JWT")
+                .claim("id", data)
                 .claim("type", "access_token")
                 .signWith(SignatureAlgorithm.HS256, SECURITY_KEY.getBytes())
                 .compact();
@@ -32,17 +32,29 @@ public class JwtTokenUtil {
         return Jwts.builder()
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + (1000L * 3600 * 24 * 30)))
-                .setHeaderParam("type", "JWT")
-                .claim("user_id", data)
+                .setHeaderParam("typ", "JWT")
+                .claim("id", data)
                 .claim("type", "refresh_token")
                 .signWith(SignatureAlgorithm.HS256, SECURITY_KEY.getBytes())
                 .compact();
     }
 
+    public static Integer parseAccessToken(String token) {
+        try {
+            if(!Jwts.parser().setSigningKey(SECURITY_KEY.getBytes()).parseClaimsJws(token).getBody().get("type").equals("access_token")) throw new InvalidTokenException();
+            token = Jwts.parser().setSigningKey(SECURITY_KEY.getBytes()).parseClaimsJws(token).getBody().get("id").toString();
+        } catch (ExpiredJwtException e) {
+            throw new ExpiredTokenException();
+        } catch (MalformedJwtException e) {
+            throw new InvalidTokenException();
+        }
+        return Integer.parseInt(token);
+    }
+
     public static Integer parseRefreshToken(String token) {
         try {
-            if(Jwts.parser().setSigningKey(SECURITY_KEY.getBytes()).parseClaimsJws(token).getBody().get("type").equals("refresh_token")) throw new InvalidTokenException();
-            token = Jwts.parser().setSigningKey(SECURITY_KEY.getBytes()).parseClaimsJws(token).getBody().get("email").toString();
+            if(!Jwts.parser().setSigningKey(SECURITY_KEY.getBytes()).parseClaimsJws(token).getBody().get("type").equals("refresh_token")) throw new InvalidTokenException();
+            token = Jwts.parser().setSigningKey(SECURITY_KEY.getBytes()).parseClaimsJws(token).getBody().get("id").toString();
         } catch (ExpiredJwtException e) {
             throw new ExpiredTokenException();
         } catch (MalformedJwtException e) {
