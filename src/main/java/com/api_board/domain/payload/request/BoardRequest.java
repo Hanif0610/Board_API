@@ -2,6 +2,8 @@ package com.api_board.domain.payload.request;
 
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
+
 @Getter
 @Setter
 @Builder
@@ -9,7 +11,9 @@ import lombok.*;
 @AllArgsConstructor
 public class BoardRequest {
 
+    @NotBlank
     private String title;
 
+    @NotBlank
     private String content;
 }

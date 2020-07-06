@@ -7,11 +7,11 @@ import java.time.LocalDate;
 
 @Getter
 @Builder
-public class BoardResponse {
+public class BoardListResponse {
+
+    private Integer uuid;
 
     private String title;
-
-    private String content;
 
     private String author;
 
