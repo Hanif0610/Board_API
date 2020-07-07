@@ -9,6 +9,8 @@ import java.time.LocalDate;
 @Builder
 public class BoardResponse {
 
+    private Integer uuid;
+
     private String title;
 
     private String content;
