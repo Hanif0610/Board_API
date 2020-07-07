@@ -6,10 +6,9 @@ import com.api_board.domain.payload.request.SignUp;
 import com.api_board.domain.repository.UserRepository;
 import com.api_board.exception.UserAlreadyExistsException;
 import com.api_board.exception.UserNotFoundException;
-import com.api_board.exception4.PasswordSameException;
+import com.api_board.exception.PasswordSameException;
 import com.api_board.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
