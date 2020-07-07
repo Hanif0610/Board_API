@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Getter
+@Setter
 @Builder
 @Table
 @Entity
@@ -25,6 +26,9 @@ public class Board {
 
     @Column(nullable = false)
     private String author;
+
+    @Column(nullable = false)
+    private Integer userId;
 
     private LocalDate createDate;
 }

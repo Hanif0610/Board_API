@@ -3,6 +3,7 @@ package com.api_board.service.user;
 import com.api_board.domain.entity.User;
 import com.api_board.domain.payload.request.SignUp;
 import com.api_board.domain.repository.UserRepository;
+import com.api_board.exception.UserAlreadyExistsException;
 import com.api_board.exception.UserNotFoundException;
 import com.api_board.util.JwtTokenUtil;
 import io.jsonwebtoken.Jwts;
@@ -19,6 +20,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void signUp(SignUp signUp) {
+
+        if(userRepository.findByEmail(signUp.getEmail()).isPresent()) throw new UserAlreadyExistsException();
 
         String email = signUp.getEmail();
         String name = signUp.getName();

@@ -11,5 +11,6 @@ public interface BoardService {
     void write(String token, BoardRequest boardRequest);
     List<BoardListResponse> boardList();
     BoardResponse getBoard(String token, Integer uuid);
+    void modifyBoard(String token, BoardRequest boardRequest, Integer uuid);
     void deleteBoard(String token, Integer uuid);
 }

@@ -6,6 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter
+@Setter
 @Table
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

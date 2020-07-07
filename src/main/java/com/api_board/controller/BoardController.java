@@ -36,6 +36,12 @@ public class BoardController {
         return boardService.getBoard(token, uuid);
     }
 
+    @PutMapping("/list/{uuid}")
+    public void modify(@RequestHeader("Authorization") @NotNull String token,
+                       @RequestBody @Valid BoardRequest boardRequest, @PathVariable Integer uuid) {
+        boardService.modifyBoard(token, boardRequest, uuid);
+    }
+
     @DeleteMapping("/list/{uuid}")
     public void deleteBoard(@RequestHeader("Authorization") @NotNull String token,
                             @PathVariable Integer uuid) {

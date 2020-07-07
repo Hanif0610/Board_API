@@ -9,6 +9,7 @@ import com.api_board.domain.repository.BoardRepository;
 import com.api_board.domain.repository.UserRepository;
 import com.api_board.exception.BoardNotFoundException;
 import com.api_board.exception.UserNotFoundException;
+import com.api_board.exception.UserNotSameException;
 import com.api_board.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,7 @@ public class BoardServiceImpl implements BoardService {
                 .title(boardRequest.getTitle())
                 .content(boardRequest.getContent())
                 .author(user.getName())
+                .userId(user.getId())
                 .createDate(LocalDate.now())
                 .build()
         );
@@ -59,21 +61,45 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public BoardResponse getBoard(String token, Integer uuid) {
-        userRepository.findById(JwtTokenUtil.parseAccessToken(token))
+        User user = userRepository.findById(JwtTokenUtil.parseAccessToken(token))
                 .orElseThrow(UserNotFoundException::new);
         Board board = boardRepository.findById(uuid).orElseThrow(BoardNotFoundException::new);
 
         return BoardResponse.builder()
                             .title(board.getTitle())
                             .content(board.getTitle())
-                            .author(board.getAuthor())
+                            .author(user.getName())
                             .createdDate(board.getCreateDate())
                             .build();
     }
 
     @Override
+    public void modifyBoard(String token, BoardRequest boardRequest, Integer uuid) {
+        User user = userRepository.findById(JwtTokenUtil.parseAccessToken(token))
+                .orElseThrow(UserNotFoundException::new);
+        Board author = boardRepository.findById(JwtTokenUtil.parseAccessToken(token))
+                .orElseThrow(BoardNotFoundException::new);;
+        if(user.getId().equals(author.getUserId())) {
+            Board board = boardRepository.findById(uuid).orElseThrow(BoardNotFoundException::new);
+            board.setTitle(boardRequest.getTitle());
+            board.setContent(boardRequest.getContent());
+            boardRepository.save(board);
+        } else {
+            throw new UserNotSameException();
+        }
+    }
+
+    @Override
     public void deleteBoard(String token, Integer uuid) {
-        
+        User user = userRepository.findById(JwtTokenUtil.parseAccessToken(token))
+                .orElseThrow(UserNotFoundException::new);
+        Board author = boardRepository.findById(JwtTokenUtil.parseAccessToken(token))
+                .orElseThrow(BoardNotFoundException::new);;
+        if(user.getId().equals(author.getUserId())) {
+            boardRepository.deleteById(uuid);
+        } else {
+            throw new UserNotSameException();
+        }
     }
 
 }
