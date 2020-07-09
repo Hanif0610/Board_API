@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
     public void chargePassword(String token, ChargePassword chargePassword) {
         User user = userRepository.findById(JwtTokenUtil.parseAccessToken(token)).orElseThrow(UserNotFoundException::new);
 
-        if (!isSamePassword(chargePassword.getPassword(), user.getPassword())) {
+        if (isSamePassword(chargePassword.getPassword(), user.getPassword())) {
             throw new PasswordSameException();
         }
 
