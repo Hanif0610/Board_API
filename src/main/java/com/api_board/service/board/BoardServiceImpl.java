@@ -49,7 +49,6 @@ public class BoardServiceImpl implements BoardService {
         for (Board board : boardRepository.findAllByOrderByCreateDateAsc()) {
             listBoard.add(
                     BoardListResponse.builder()
-                                .uuid(board.getUuid())
                                 .title(board.getTitle())
                                 .author(board.getAuthor())
                                 .createdDate(board.getCreateDate())
@@ -66,7 +65,6 @@ public class BoardServiceImpl implements BoardService {
         Board board = boardRepository.findById(uuid).orElseThrow(BoardNotFoundException::new);
 
         return BoardResponse.builder()
-                            .uuid(board.getUuid())
                             .title(board.getTitle())
                             .content(board.getTitle())
                             .author(user.getName())
