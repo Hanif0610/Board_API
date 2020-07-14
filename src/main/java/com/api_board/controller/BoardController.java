@@ -5,7 +5,6 @@ import com.api_board.domain.payload.response.BoardListResponse;
 import com.api_board.domain.payload.response.BoardResponse;
 import com.api_board.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -31,9 +30,8 @@ public class BoardController {
     }
 
     @GetMapping("/list/{uuid}")
-    public BoardResponse getBoard(@RequestHeader("Authorization") @NotNull String token,
-                                  @PathVariable Integer uuid) {
-        return boardService.getBoard(token, uuid);
+    public BoardResponse getBoard(@PathVariable @NotNull @Valid Integer uuid) {
+        return boardService.getBoard(uuid);
     }
 
     @PutMapping("/list/{uuid}")

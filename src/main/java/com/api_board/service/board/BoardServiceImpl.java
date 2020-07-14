@@ -59,15 +59,13 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public BoardResponse getBoard(String token, Integer uuid) {
-        User user = userRepository.findById(JwtTokenUtil.parseAccessToken(token))
-                .orElseThrow(UserNotFoundException::new);
+    public BoardResponse getBoard(Integer uuid) {
         Board board = boardRepository.findById(uuid).orElseThrow(BoardNotFoundException::new);
 
         return BoardResponse.builder()
                             .title(board.getTitle())
                             .content(board.getTitle())
-                            .author(user.getName())
+                            .author(board.getAuthor())
                             .createdDate(board.getCreateDate())
                             .build();
     }
