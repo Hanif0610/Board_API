@@ -64,7 +64,7 @@ public class BoardServiceImpl implements BoardService {
 
         return BoardResponse.builder()
                             .title(board.getTitle())
-                            .content(board.getTitle())
+                            .content(board.getContent())
                             .author(board.getAuthor())
                             .createdDate(board.getCreateDate())
                             .build();
