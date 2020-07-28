@@ -49,6 +49,7 @@ public class BoardServiceImpl implements BoardService {
         for (Board board : boardRepository.findAllByOrderByCreateDateAsc()) {
             listBoard.add(
                     BoardListResponse.builder()
+                                .uuid(board.getUuid())
                                 .title(board.getTitle())
                                 .author(board.getAuthor())
                                 .createdDate(board.getCreateDate())

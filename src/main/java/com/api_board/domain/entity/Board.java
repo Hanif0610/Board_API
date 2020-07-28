@@ -15,6 +15,7 @@ import java.time.LocalDate;
 public class Board {
 
     @Id
+    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer uuid;
 
