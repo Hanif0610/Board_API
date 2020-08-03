@@ -1,6 +1,6 @@
 package com.api_board.controller;
 
-import com.api_board.domain.payload.request.SignIn;
+import com.api_board.domain.payload.request.SignInRequest;
 import com.api_board.domain.payload.response.TokenResponse;
 import com.api_board.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +16,8 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping
-    public TokenResponse signIn(@RequestBody @Valid SignIn signIn) {
-        return authService.signIn(signIn);
+    public TokenResponse signIn(@RequestBody @Valid SignInRequest signInRequest) {
+        return authService.signIn(signInRequest);
     }
 
     @PutMapping

@@ -1,7 +1,7 @@
 package com.api_board.service.auth;
 
 import com.api_board.domain.entity.User;
-import com.api_board.domain.payload.request.SignIn;
+import com.api_board.domain.payload.request.SignInRequest;
 import com.api_board.domain.payload.response.TokenResponse;
 import com.api_board.domain.repository.UserRepository;
 import com.api_board.exception.UserNotFoundException;
@@ -19,9 +19,9 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public TokenResponse signIn(SignIn signIn) {
-        User user = userRepository.findByEmail(signIn.getEmail())
-                .filter(u -> passwordEncoder.matches(signIn.getPassword(), u.getPassword()))
+    public TokenResponse signIn(SignInRequest signInRequest) {
+        User user = userRepository.findByEmail(signInRequest.getEmail())
+                .filter(u -> passwordEncoder.matches(signInRequest.getPassword(), u.getPassword()))
                 .orElseThrow(UserNotFoundException::new);
         return responseToken(user.getId());
     }
