@@ -5,6 +5,8 @@ import com.api_board.domain.payload.response.BoardListResponse;
 import com.api_board.domain.payload.response.BoardResponse;
 import com.api_board.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,9 +20,10 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    @PostMapping("/write")
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping(value = "/list/write", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void write(@RequestHeader("Authorization") @NotNull String token,
-                      @RequestBody @Valid BoardRequest boardRequest) {
+                      @ModelAttribute @Valid BoardRequest boardRequest) {
         boardService.write(token, boardRequest);
     }
 
@@ -29,20 +32,20 @@ public class BoardController {
         return boardService.boardList();
     }
 
-    @GetMapping("/list/{uuid}")
-    public BoardResponse getBoard(@PathVariable @NotNull @Valid Integer uuid) {
-        return boardService.getBoard(uuid);
+    @GetMapping("/list/{id}")
+    public BoardResponse getBoard(@PathVariable @Valid Integer id) {
+        return boardService.getBoard(id);
     }
 
-    @PutMapping("/list/{uuid}")
+    @PutMapping("/list/{id}")
     public void modify(@RequestHeader("Authorization") @NotNull String token,
-                       @RequestBody @Valid BoardRequest boardRequest, @PathVariable Integer uuid) {
-        boardService.modifyBoard(token, boardRequest, uuid);
+                       @RequestBody @Valid BoardRequest boardRequest, @PathVariable Integer id) {
+        boardService.modifyBoard(token, boardRequest, id);
     }
 
-    @DeleteMapping("/list/{uuid}")
+    @DeleteMapping("/list/{id}")
     public void deleteBoard(@RequestHeader("Authorization") @NotNull String token,
-                            @PathVariable Integer uuid) {
-        boardService.deleteBoard(token, uuid);
+                            @PathVariable Integer id) {
+        boardService.deleteBoard(token, id);
     }
 }

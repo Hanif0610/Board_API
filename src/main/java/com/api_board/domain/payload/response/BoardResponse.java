@@ -3,7 +3,7 @@ package com.api_board.domain.payload.response;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Builder
@@ -15,5 +15,7 @@ public class BoardResponse {
 
     private String author;
 
-    private LocalDate createdDate;
+    private List<String> uri;
+
+    private String createdDate;
 }

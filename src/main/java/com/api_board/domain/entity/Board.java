@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,7 +18,7 @@ public class Board {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer uuid;
+    private Integer id;
 
     @Column(nullable = false)
     private String title;
@@ -30,6 +31,10 @@ public class Board {
 
     @Column(nullable = false)
     private Integer userId;
+
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OrderColumn
+    private List<File> files;
 
     private LocalDate createDate;
 }
