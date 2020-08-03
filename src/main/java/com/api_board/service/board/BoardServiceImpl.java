@@ -100,7 +100,7 @@ public class BoardServiceImpl implements BoardService {
         Board board = boardRepository.findById(id).orElseThrow(BoardNotFoundException::new);
         List<String> files = new LinkedList<>();
         for (File file : board.getFiles()) {
-            files.add(file.getUri());
+            files.add("http://localhost:8080/board/list/" + id + "/" + file.getUri());
         }
 
         return BoardResponse.builder()
