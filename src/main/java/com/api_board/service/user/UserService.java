@@ -1,10 +1,10 @@
 package com.api_board.service.user;
 
-import com.api_board.domain.payload.request.ChargePassword;
-import com.api_board.domain.payload.request.SignUp;
+import com.api_board.domain.payload.request.ChargePasswordRequest;
+import com.api_board.domain.payload.request.SignUpRequest;
 
 public interface UserService {
 
-    void signUp(SignUp signUp);
-    void chargePassword(String token, ChargePassword chargePassword);
+    void signUp(SignUpRequest signUpRequest);
+    void chargePassword(String token, ChargePasswordRequest chargePasswordRequest);
 }

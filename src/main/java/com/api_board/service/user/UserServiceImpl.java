@@ -1,8 +1,8 @@
 package com.api_board.service.user;
 
 import com.api_board.domain.entity.User;
-import com.api_board.domain.payload.request.ChargePassword;
-import com.api_board.domain.payload.request.SignUp;
+import com.api_board.domain.payload.request.ChargePasswordRequest;
+import com.api_board.domain.payload.request.SignUpRequest;
 import com.api_board.domain.repository.UserRepository;
 import com.api_board.exception.UserAlreadyExistsException;
 import com.api_board.exception.UserNotFoundException;
@@ -20,13 +20,13 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public void signUp(SignUp signUp) {
+    public void signUp(SignUpRequest signUpRequest) {
 
-        if(userRepository.findByEmail(signUp.getEmail()).isPresent()) throw new UserAlreadyExistsException();
+        if(userRepository.findByEmail(signUpRequest.getEmail()).isPresent()) throw new UserAlreadyExistsException();
 
-        String email = signUp.getEmail();
-        String name = signUp.getName();
-        String password = passwordEncoder.encode(signUp.getPassword());
+        String email = signUpRequest.getEmail();
+        String name = signUpRequest.getName();
+        String password = passwordEncoder.encode(signUpRequest.getPassword());
 
         userRepository.save(
                 User.builder()
@@ -38,14 +38,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void chargePassword(String token, ChargePassword chargePassword) {
+    public void chargePassword(String token, ChargePasswordRequest chargePasswordRequest) {
         User user = userRepository.findById(JwtTokenUtil.parseAccessToken(token)).orElseThrow(UserNotFoundException::new);
 
-        if (isSamePassword(chargePassword.getPassword(), user.getPassword())) {
+        if (isSamePassword(chargePasswordRequest.getPassword(), user.getPassword())) {
             throw new PasswordSameException();
         }
 
-        user.setPassword(passwordEncoder.encode(chargePassword.getPassword()));
+        user.setPassword(passwordEncoder.encode(chargePasswordRequest.getPassword()));
         userRepository.save(user);
     }
 
