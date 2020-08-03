@@ -6,7 +6,7 @@ import lombok.*;
 @Builder
 public class UserResponse {
 
-    private Integer uuid;
+    private Integer id;
     private String email;
     private String password;
     private String name;
