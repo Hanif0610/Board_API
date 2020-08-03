@@ -146,7 +146,7 @@ public class BoardServiceImpl implements BoardService {
         String fileName = file.getOriginalFilename();
 
         try {
-            if (fileName.contains(".."))
+            if (fileName.contains("..") || fileName.contains(" "))
                 throw new FileUploadException("파일명에 부적합 문자가 포함되어 있습니다. " + fileName);
 
             file.transferTo(new java.io.File(fileLocation.concat(fileName)));
