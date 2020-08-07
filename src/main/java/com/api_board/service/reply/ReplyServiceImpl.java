@@ -14,6 +14,7 @@ import com.api_board.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,9 +47,17 @@ public class ReplyServiceImpl implements ReplyService {
                         .parentComment(parent)
                         .writer(user.getName())
                         .bno(board.getId())
+                        .createAt(LocalDate.now())
                         .build()
         );
         return reply.getRno();
+    }
+
+    @Override
+    public List<ReplyResponse> getComments(Integer bno) {
+        Board board = boardRepository.findById(bno).orElseThrow(BoardNotFoundException::new);
+
+        
     }
 
 }
