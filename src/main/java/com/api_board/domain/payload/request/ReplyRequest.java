@@ -12,6 +12,9 @@ public class ReplyRequest {
     @NotBlank
     private String content;
 
+    @NotBlank
+    private Integer bno;
+
     private Integer parent_comment_id;
 
 }

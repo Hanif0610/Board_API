@@ -28,7 +28,7 @@ public class Reply {
     @Column(nullable = false)
     private String content;
 
-    @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL)
     private List<Reply> childComment;
 
     @ManyToOne
