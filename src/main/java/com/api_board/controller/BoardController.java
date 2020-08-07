@@ -4,6 +4,7 @@ import com.api_board.domain.payload.request.BoardRequest;
 import com.api_board.domain.payload.request.ReplyRequest;
 import com.api_board.domain.payload.response.BoardListResponse;
 import com.api_board.domain.payload.response.BoardResponse;
+import com.api_board.domain.payload.response.ReplyResponse;
 import com.api_board.service.board.BoardService;
 import com.api_board.service.reply.ReplyService;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +38,7 @@ public class BoardController {
     }
 
     @GetMapping("/{id}")
-    public BoardResponse getBoard(@PathVariable @Valid Integer id) {
+    public BoardResponse getBoard(@PathVariable Integer id) {
         return boardService.getBoard(id);
     }
 
@@ -51,12 +52,5 @@ public class BoardController {
     public void deleteBoard(@RequestHeader("Authorization") @NotNull String token,
                             @PathVariable Integer id) {
         boardService.deleteBoard(token, id);
-    }
-
-    @PostMapping("/{id}/comments")
-    public Integer writeComment(@RequestHeader("Authorization") @NotNull String token,
-                                @RequestBody @Valid ReplyRequest replyRequest,
-                                @PathVariable Integer id) {
-        return replyService.writeComments(token, id, replyRequest);
     }
 }
