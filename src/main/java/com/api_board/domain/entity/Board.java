@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -32,9 +33,13 @@ public class Board {
     @Column(nullable = false)
     private Integer userId;
 
-    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderColumn
     private List<File> files;
+
+    @OneToMany(mappedBy = "bno", cascade = CascadeType.ALL)
+    private List<Reply> comments = new ArrayList<>();
+
 
     private LocalDate createDate;
 }
