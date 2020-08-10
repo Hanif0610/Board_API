@@ -53,10 +53,7 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
-    public List<ReplyResponse> getComments(String token, Integer bno) {
-
-        User user = userRepository.findById(JwtTokenUtil.parseAccessToken(token))
-                .orElseThrow(UserNotFoundException::new);
+    public List<ReplyResponse> getComments(Integer bno) {
 
         Board board = boardRepository.findById(bno).orElseThrow(BoardNotFoundException::new);
 
@@ -70,7 +67,7 @@ public class ReplyServiceImpl implements ReplyService {
                             .content(comment.getContent())
                             .rno(comment.getRno())
                             .bno(comment.getBno())
-                            .writer(user.getName())
+                            .writer(comment.getWriter())
                             .child_comments(comments)
                             .createAt(String.valueOf(comment.getCreateAt()))
                             .build();
