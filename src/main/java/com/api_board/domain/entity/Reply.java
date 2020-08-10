@@ -20,10 +20,13 @@ public class Reply {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer rno;
 
+    @Column
     private Integer bno;
 
+    @Column
     private String writer;
 
+    @Column
     private String content;
 
     @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL)

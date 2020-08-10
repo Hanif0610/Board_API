@@ -8,5 +8,5 @@ import java.util.List;
 public interface ReplyService {
 
     Integer writeComments(String token, ReplyRequest replyRequest);
-    List<ReplyResponse> getComments(Integer bno);
+    List<ReplyResponse> getComments(String token, Integer bno);
 }

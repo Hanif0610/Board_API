@@ -24,7 +24,8 @@ public class ReplyController {
     }
 
     @GetMapping
-    public List<ReplyResponse> getComment(@RequestParam Integer bno) {
-        return replyService.getComments(bno);
+    public List<ReplyResponse> getComment(@RequestHeader("Authorization") @NotNull String token,
+                                          @RequestParam Integer bno) {
+        return replyService.getComments(token, bno);
     }
 }

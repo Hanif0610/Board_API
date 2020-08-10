@@ -18,4 +18,6 @@ public class ReplyResponse {
     private String content;
 
     private List<Integer> child_comments;
+
+    private String createAt;
 }

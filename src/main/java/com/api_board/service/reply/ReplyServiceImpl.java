@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +36,7 @@ public class ReplyServiceImpl implements ReplyService {
         Board board = boardRepository.findById(replyRequest.getBno()).orElseThrow(BoardNotFoundException::new);
 
         Reply parent = null;
-        if(replyRequest.getParent_comment_id() != null) {
+        if (replyRequest.getParent_comment_id() != null) {
             parent = replyRepository.findByRno(replyRequest.getParent_comment_id());
         }
 
@@ -54,10 +53,29 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
-    public List<ReplyResponse> getComments(Integer bno) {
+    public List<ReplyResponse> getComments(String token, Integer bno) {
+
+        User user = userRepository.findById(JwtTokenUtil.parseAccessToken(token))
+                .orElseThrow(UserNotFoundException::new);
+
         Board board = boardRepository.findById(bno).orElseThrow(BoardNotFoundException::new);
 
-        
+        return board.getComments().stream()
+                .map(comment -> {
+                    List<Integer> comments = comment.getChildComment().stream()
+                            .map(Reply::getRno)
+                            .collect(Collectors.toList());
+
+                    return ReplyResponse.builder()
+                            .content(comment.getContent())
+                            .rno(comment.getRno())
+                            .bno(comment.getBno())
+                            .writer(user.getName())
+                            .child_comments(comments)
+                            .createAt(String.valueOf(comment.getCreateAt()))
+                            .build();
+                })
+                .collect(Collectors.toList());
     }
 
 }
