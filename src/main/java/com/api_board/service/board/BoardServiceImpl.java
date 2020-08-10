@@ -138,7 +138,7 @@ public class BoardServiceImpl implements BoardService {
                 .orElseThrow(BoardNotFoundException::new);
         if (user.getId().equals(author.getUserId())) throw new UserNotSameException();
 
-        boardRepository.deleteAllById(id);
+        boardRepository.deleteById(id);
     }
 
     public String storeFile(MultipartFile file) {
