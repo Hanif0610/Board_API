@@ -119,14 +119,15 @@ public class BoardServiceImpl implements BoardService {
         Board author = boardRepository.findById(JwtTokenUtil.parseAccessToken(token))
                 .orElseThrow(BoardNotFoundException::new);
 
-        if (user.getId().equals(author.getUserId())) {
-            Board board = boardRepository.findById(id).orElseThrow(BoardNotFoundException::new);
-            board.setTitle(boardRequest.getTitle());
-            board.setContent(boardRequest.getContent());
-            boardRepository.save(board);
-        } else {
-            throw new UserNotSameException();
-        }
+        if(!user.getId().equals(author.getUserId())) throw new UserNotSameException();
+
+        Board board = boardRepository.findById(id).orElseThrow(BoardNotFoundException::new);
+
+        board.setTitle(boardRequest.getTitle());
+        board.setContent(boardRequest.getContent());
+        board.setCreateDate(LocalDate.now());
+
+        boardRepository.save(board);
     }
 
     @Override
@@ -135,11 +136,9 @@ public class BoardServiceImpl implements BoardService {
                 .orElseThrow(UserNotFoundException::new);
         Board author = boardRepository.findById(JwtTokenUtil.parseAccessToken(token))
                 .orElseThrow(BoardNotFoundException::new);
-        if (user.getId().equals(author.getUserId())) {
-            boardRepository.deleteAllById(id);
-        } else {
-            throw new UserNotSameException();
-        }
+        if (user.getId().equals(author.getUserId())) throw new UserNotSameException();
+
+        boardRepository.deleteAllById(id);
     }
 
     public String storeFile(MultipartFile file) {
