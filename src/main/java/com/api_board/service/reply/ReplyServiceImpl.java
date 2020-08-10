@@ -3,6 +3,7 @@ package com.api_board.service.reply;
 import com.api_board.domain.entity.Board;
 import com.api_board.domain.entity.Reply;
 import com.api_board.domain.entity.User;
+import com.api_board.domain.payload.request.ReplyDeleteRequest;
 import com.api_board.domain.payload.request.ReplyRequest;
 import com.api_board.domain.payload.request.ReplyUpdateRequest;
 import com.api_board.domain.payload.response.ReplyResponse;
@@ -10,6 +11,7 @@ import com.api_board.domain.repository.BoardRepository;
 import com.api_board.domain.repository.ReplyRepository;
 import com.api_board.domain.repository.UserRepository;
 import com.api_board.exception.BoardNotFoundException;
+import com.api_board.exception.CommentNotFoundException;
 import com.api_board.exception.UserNotFoundException;
 import com.api_board.exception.UserNotSameException;
 import com.api_board.util.JwtTokenUtil;
@@ -85,12 +87,25 @@ public class ReplyServiceImpl implements ReplyService {
 
         Reply reply = replyRepository.findByRno(replyUpdateRequest.getRno());
 
+        if(reply == null) throw new CommentNotFoundException();
         if(!user.getId().equals(reply.getUserId())) throw new UserNotSameException();
 
         reply.setContent(replyUpdateRequest.getContent());
         reply.setCreateAt(LocalDate.now());
 
         replyRepository.save(reply);
+    }
+
+    @Override
+    public void deleteComments(String token, Integer comment) {
+        User user = userRepository.findById(JwtTokenUtil.parseAccessToken(token))
+                .orElseThrow(UserNotFoundException::new);
+        Reply reply = replyRepository.findByRno(comment);
+
+        if(reply == null) throw new CommentNotFoundException();
+        if(!user.getId().equals(reply.getUserId())) throw new UserNotSameException();
+
+        replyRepository.deleteByRno(comment);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.api_board.controller;
 
+import com.api_board.domain.payload.request.ReplyDeleteRequest;
 import com.api_board.domain.payload.request.ReplyRequest;
 import com.api_board.domain.payload.request.ReplyUpdateRequest;
 import com.api_board.domain.payload.response.ReplyResponse;
@@ -33,5 +34,11 @@ public class ReplyController {
     public void updateComment(@RequestHeader("Authorization") @NotNull String token,
                               @RequestBody @Valid ReplyUpdateRequest replyUpdateRequest) {
         replyService.updateComments(token, replyUpdateRequest);
+    }
+
+    @DeleteMapping("/{comment_id}")
+    public void deleteComment(@RequestHeader("Authorization") @NotNull String token,
+                              @PathVariable Integer comment_id) {
+        replyService.deleteComments(token, comment_id);
     }
 }
