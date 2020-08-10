@@ -1,6 +1,7 @@
 package com.api_board.controller;
 
 import com.api_board.domain.payload.request.ReplyRequest;
+import com.api_board.domain.payload.request.ReplyUpdateRequest;
 import com.api_board.domain.payload.response.ReplyResponse;
 import com.api_board.service.reply.ReplyService;
 import lombok.RequiredArgsConstructor;
@@ -26,5 +27,11 @@ public class ReplyController {
     @GetMapping
     public List<ReplyResponse> getComment(@RequestParam Integer bno) {
         return replyService.getComments(bno);
+    }
+
+    @PutMapping
+    public void updateComment(@RequestHeader("Authorization") @NotNull String token,
+                              @RequestBody @Valid ReplyUpdateRequest replyUpdateRequest) {
+        replyService.updateComments(token, replyUpdateRequest);
     }
 }

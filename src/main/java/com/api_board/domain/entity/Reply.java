@@ -29,6 +29,9 @@ public class Reply {
     @Column
     private String content;
 
+    @Column
+    private Integer userId;
+
     @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL)
     private List<Reply> childComment;
 

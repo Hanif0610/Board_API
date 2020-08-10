@@ -4,12 +4,14 @@ import com.api_board.domain.entity.Board;
 import com.api_board.domain.entity.Reply;
 import com.api_board.domain.entity.User;
 import com.api_board.domain.payload.request.ReplyRequest;
+import com.api_board.domain.payload.request.ReplyUpdateRequest;
 import com.api_board.domain.payload.response.ReplyResponse;
 import com.api_board.domain.repository.BoardRepository;
 import com.api_board.domain.repository.ReplyRepository;
 import com.api_board.domain.repository.UserRepository;
 import com.api_board.exception.BoardNotFoundException;
 import com.api_board.exception.UserNotFoundException;
+import com.api_board.exception.UserNotSameException;
 import com.api_board.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -46,6 +48,7 @@ public class ReplyServiceImpl implements ReplyService {
                         .parentComment(parent)
                         .writer(user.getName())
                         .bno(board.getId())
+                        .userId(user.getId())
                         .createAt(LocalDate.now())
                         .build()
         );
@@ -73,6 +76,21 @@ public class ReplyServiceImpl implements ReplyService {
                             .build();
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void updateComments(String token, ReplyUpdateRequest replyUpdateRequest) {
+        User user = userRepository.findById(JwtTokenUtil.parseAccessToken(token))
+                .orElseThrow(UserNotFoundException::new);
+
+        Reply reply = replyRepository.findByRno(replyUpdateRequest.getRno());
+
+        if(!user.getId().equals(reply.getUserId())) throw new UserNotSameException();
+
+        reply.setContent(replyUpdateRequest.getContent());
+        reply.setCreateAt(LocalDate.now());
+
+        replyRepository.save(reply);
     }
 
 }
