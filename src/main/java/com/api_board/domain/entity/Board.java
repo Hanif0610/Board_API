@@ -40,6 +40,5 @@ public class Board {
     @OneToMany(mappedBy = "bno", cascade = CascadeType.ALL)
     private List<Reply> comments = new ArrayList<>();
 
-
     private LocalDate createDate;
 }

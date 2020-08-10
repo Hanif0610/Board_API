@@ -1,10 +1,8 @@
 package com.api_board.controller;
 
 import com.api_board.domain.payload.request.BoardRequest;
-import com.api_board.domain.payload.request.ReplyRequest;
 import com.api_board.domain.payload.response.BoardListResponse;
 import com.api_board.domain.payload.response.BoardResponse;
-import com.api_board.domain.payload.response.ReplyResponse;
 import com.api_board.service.board.BoardService;
 import com.api_board.service.reply.ReplyService;
 import lombok.RequiredArgsConstructor;
