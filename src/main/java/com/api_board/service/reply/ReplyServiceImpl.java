@@ -3,7 +3,6 @@ package com.api_board.service.reply;
 import com.api_board.domain.entity.Board;
 import com.api_board.domain.entity.Reply;
 import com.api_board.domain.entity.User;
-import com.api_board.domain.payload.request.ReplyDeleteRequest;
 import com.api_board.domain.payload.request.ReplyRequest;
 import com.api_board.domain.payload.request.ReplyUpdateRequest;
 import com.api_board.domain.payload.response.ReplyResponse;

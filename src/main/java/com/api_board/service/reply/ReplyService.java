@@ -1,6 +1,5 @@
 package com.api_board.service.reply;
 
-import com.api_board.domain.payload.request.ReplyDeleteRequest;
 import com.api_board.domain.payload.request.ReplyRequest;
 import com.api_board.domain.payload.request.ReplyUpdateRequest;
 import com.api_board.domain.payload.response.ReplyResponse;
