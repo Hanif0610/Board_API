@@ -1,13 +1,13 @@
 package com.api_board.domain.payload.request;
 
-import lombok.*;
+
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class ChargePasswordRequest {
 
     @NotBlank
