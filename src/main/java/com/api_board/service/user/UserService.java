@@ -6,5 +6,5 @@ import com.api_board.domain.payload.request.SignUpRequest;
 public interface UserService {
 
     void signUp(SignUpRequest signUpRequest);
-    void chargePassword(String token, ChargePasswordRequest chargePasswordRequest);
+    void chargePassword(ChargePasswordRequest chargePasswordRequest);
 }

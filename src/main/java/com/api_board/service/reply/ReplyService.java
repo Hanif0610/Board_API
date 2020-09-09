@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface ReplyService {
 
-    Integer writeComments(String token, ReplyRequest replyRequest);
+    Integer writeComments(ReplyRequest replyRequest);
     List<ReplyResponse> getComments(Integer bno);
-    void updateComments(String token, ReplyUpdateRequest replyUpdateRequest);
-    void deleteComments(String token, Integer comment);
+    void updateComments(ReplyUpdateRequest replyUpdateRequest);
+    void deleteComments(Integer comment);
 }

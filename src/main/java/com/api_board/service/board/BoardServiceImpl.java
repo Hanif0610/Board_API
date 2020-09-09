@@ -13,7 +13,7 @@ import com.api_board.exception.BoardNotFoundException;
 import com.api_board.exception.FileUploadException;
 import com.api_board.exception.UserNotFoundException;
 import com.api_board.exception.UserNotSameException;
-import com.api_board.util.JwtTokenUtil;
+import com.api_board.security.AuthenticationFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -39,12 +39,15 @@ public class BoardServiceImpl implements BoardService {
 
     private final FileRepository fileRepository;
 
+    private final AuthenticationFacade authenticationFacade;
+
     @Value("${file.upload-dir}")
     private String fileLocation;
 
     @Override
-    public void write(String token, BoardRequest boardRequest) {
-        User user = userRepository.findById(JwtTokenUtil.parseAccessToken(token))
+    public void write(BoardRequest boardRequest) {
+        System.out.println(authenticationFacade.getUserEmail());
+        User user = userRepository.findByEmail(authenticationFacade.getUserEmail())
                 .orElseThrow(UserNotFoundException::new);
 
         if(boardRequest.getFiles() != null) {
@@ -113,10 +116,10 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void modifyBoard(String token, BoardRequest boardRequest, Integer id) {
-        User user = userRepository.findById(JwtTokenUtil.parseAccessToken(token))
+    public void modifyBoard(BoardRequest boardRequest, Integer id) {
+        User user = userRepository.findByEmail(authenticationFacade.getUserEmail())
                 .orElseThrow(UserNotFoundException::new);
-        Board author = boardRepository.findById(JwtTokenUtil.parseAccessToken(token))
+        Board author = boardRepository.findById(user.getId())
                 .orElseThrow(BoardNotFoundException::new);
 
         if(!user.getId().equals(author.getUserId())) throw new UserNotSameException();
@@ -131,10 +134,10 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void deleteBoard(String token, Integer id) {
-        User user = userRepository.findById(JwtTokenUtil.parseAccessToken(token))
+    public void deleteBoard(Integer id) {
+        User user = userRepository.findByEmail(authenticationFacade.getUserEmail())
                 .orElseThrow(UserNotFoundException::new);
-        Board author = boardRepository.findById(JwtTokenUtil.parseAccessToken(token))
+        Board author = boardRepository.findById(user.getId())
                 .orElseThrow(BoardNotFoundException::new);
         if (user.getId().equals(author.getUserId())) throw new UserNotSameException();
 

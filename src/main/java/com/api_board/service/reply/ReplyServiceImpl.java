@@ -13,7 +13,7 @@ import com.api_board.exception.BoardNotFoundException;
 import com.api_board.exception.CommentNotFoundException;
 import com.api_board.exception.UserNotFoundException;
 import com.api_board.exception.UserNotSameException;
-import com.api_board.util.JwtTokenUtil;
+import com.api_board.security.AuthenticationFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,9 +31,11 @@ public class ReplyServiceImpl implements ReplyService {
 
     private final ReplyRepository replyRepository;
 
+    private final AuthenticationFacade authenticationFacade;
+
     @Override
-    public Integer writeComments(String token, ReplyRequest replyRequest) {
-        User user = userRepository.findById(JwtTokenUtil.parseAccessToken(token))
+    public Integer writeComments(ReplyRequest replyRequest) {
+        User user = userRepository.findByEmail(authenticationFacade.getUserEmail())
                 .orElseThrow(UserNotFoundException::new);
 
         Board board = boardRepository.findById(replyRequest.getBno()).orElseThrow(BoardNotFoundException::new);
@@ -80,8 +82,8 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
-    public void updateComments(String token, ReplyUpdateRequest replyUpdateRequest) {
-        User user = userRepository.findById(JwtTokenUtil.parseAccessToken(token))
+    public void updateComments(ReplyUpdateRequest replyUpdateRequest) {
+        User user = userRepository.findByEmail(authenticationFacade.getUserEmail())
                 .orElseThrow(UserNotFoundException::new);
 
         Reply reply = replyRepository.findByRno(replyUpdateRequest.getRno());
@@ -96,8 +98,8 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
-    public void deleteComments(String token, Integer comment) {
-        User user = userRepository.findById(JwtTokenUtil.parseAccessToken(token))
+    public void deleteComments(Integer comment) {
+        User user = userRepository.findByEmail(authenticationFacade.getUserEmail())
                 .orElseThrow(UserNotFoundException::new);
         Reply reply = replyRepository.findByRno(comment);
 

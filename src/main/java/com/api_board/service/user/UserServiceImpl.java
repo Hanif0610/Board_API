@@ -7,7 +7,7 @@ import com.api_board.domain.repository.UserRepository;
 import com.api_board.exception.UserAlreadyExistsException;
 import com.api_board.exception.UserNotFoundException;
 import com.api_board.exception.PasswordSameException;
-import com.api_board.util.JwtTokenUtil;
+import com.api_board.security.AuthenticationFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,12 +17,15 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+
     private final PasswordEncoder passwordEncoder;
+
+    private final AuthenticationFacade authenticationFacade;
 
     @Override
     public void signUp(SignUpRequest signUpRequest) {
 
-        if(userRepository.findByEmail(signUpRequest.getEmail()).isPresent()) throw new UserAlreadyExistsException();
+        if (userRepository.findByEmail(signUpRequest.getEmail()).isPresent()) throw new UserAlreadyExistsException();
 
         String email = signUpRequest.getEmail();
         String name = signUpRequest.getName();
@@ -30,16 +33,16 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(
                 User.builder()
-                    .email(email)
-                    .password(password)
-                    .name(name)
-                    .build()
+                        .email(email)
+                        .password(password)
+                        .name(name)
+                        .build()
         );
     }
 
     @Override
-    public void chargePassword(String token, ChargePasswordRequest chargePasswordRequest) {
-        User user = userRepository.findById(JwtTokenUtil.parseAccessToken(token)).orElseThrow(UserNotFoundException::new);
+    public void chargePassword(ChargePasswordRequest chargePasswordRequest) {
+        User user = userRepository.findByEmail(authenticationFacade.getUserEmail()).orElseThrow(UserNotFoundException::new);
 
         if (isSamePassword(chargePasswordRequest.getPassword(), user.getPassword())) {
             throw new PasswordSameException();

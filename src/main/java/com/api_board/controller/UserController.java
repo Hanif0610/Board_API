@@ -22,8 +22,7 @@ public class UserController {
     }
 
     @PutMapping("/password")
-    public void changePassword(@RequestHeader("Authorization") @NotNull String token,
-                               @RequestBody @Valid ChargePasswordRequest chargePasswordRequest) {
-        userService.chargePassword(token, chargePasswordRequest);
+    public void changePassword(@RequestBody @Valid ChargePasswordRequest chargePasswordRequest) {
+        userService.chargePassword(chargePasswordRequest);
     }
 }

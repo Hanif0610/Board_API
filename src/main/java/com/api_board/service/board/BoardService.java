@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface BoardService {
 
-    void write(String token, BoardRequest boardRequest);
+    void write(BoardRequest boardRequest);
     List<BoardListResponse> boardList();
     BoardResponse getBoard(Integer id);
-    void modifyBoard(String token, BoardRequest boardRequest, Integer id);
-    void deleteBoard(String token, Integer id);
+    void modifyBoard(BoardRequest boardRequest, Integer id);
+    void deleteBoard(Integer id);
 }
