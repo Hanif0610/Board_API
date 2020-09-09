@@ -1,11 +1,7 @@
 package com.api_board.exception;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
-@ResponseStatus(HttpStatus.FORBIDDEN)
-public class InvalidTokenException extends RuntimeException {
+public class InvalidTokenException extends BusinessException {
     public InvalidTokenException() {
-        super("Invalid TokenResponse");
+        super(ErrorCode.INVALID_TOKEN);
     }
 }
