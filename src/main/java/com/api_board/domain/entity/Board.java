@@ -33,7 +33,7 @@ public class Board {
     @Column(nullable = false)
     private Integer userId;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL)
     @OrderColumn
     private List<File> files;
 

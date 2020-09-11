@@ -35,8 +35,8 @@ public class BoardController {
         return boardService.getBoard(id);
     }
 
-    @PutMapping("/{id}")
-    public void modifyBoard(@RequestBody @Valid BoardRequest boardRequest, @PathVariable Integer id) {
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void modifyBoard(@ModelAttribute @Valid BoardRequest boardRequest, @PathVariable Integer id) {
         boardService.modifyBoard(boardRequest, id);
     }
 

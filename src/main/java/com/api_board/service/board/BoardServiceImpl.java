@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -46,7 +47,6 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public void write(BoardRequest boardRequest) {
-        System.out.println(authenticationFacade.getUserEmail());
         User user = userRepository.findByEmail(authenticationFacade.getUserEmail())
                 .orElseThrow(UserNotFoundException::new);
 
@@ -119,15 +119,26 @@ public class BoardServiceImpl implements BoardService {
     public void modifyBoard(BoardRequest boardRequest, Integer id) {
         User user = userRepository.findByEmail(authenticationFacade.getUserEmail())
                 .orElseThrow(UserNotFoundException::new);
-        Board author = boardRepository.findById(user.getId())
+        Board board = boardRepository.findById(id)
                 .orElseThrow(BoardNotFoundException::new);
 
-        if(!user.getId().equals(author.getUserId())) throw new UserNotSameException();
+        if(!user.getId().equals(board.getUserId())) throw new UserNotSameException();
 
-        Board board = boardRepository.findById(id).orElseThrow(BoardNotFoundException::new);
+        if(boardRequest.getFiles() != null) {
+            List<File> files = Arrays.stream(boardRequest.getFiles())
+                    .filter(file -> !file.isEmpty())
+                    .map(this::storeFile)
+                    .map(fileName -> new File(null, fileName, now()))
+                    .map(fileRepository::save)
+                    .collect(Collectors.toList());
 
-        board.setTitle(boardRequest.getTitle());
-        board.setContent(boardRequest.getContent());
+            board.setTitle(boardRequest.getTitle());
+            board.setContent(boardRequest.getContent());
+            board.setFiles(files);
+        } else {
+            board.setTitle(boardRequest.getTitle());
+            board.setContent(boardRequest.getContent());
+        }
         board.setCreateDate(LocalDate.now());
 
         boardRepository.save(board);
@@ -137,9 +148,10 @@ public class BoardServiceImpl implements BoardService {
     public void deleteBoard(Integer id) {
         User user = userRepository.findByEmail(authenticationFacade.getUserEmail())
                 .orElseThrow(UserNotFoundException::new);
-        Board author = boardRepository.findById(user.getId())
+        Board author = boardRepository.findById(id)
                 .orElseThrow(BoardNotFoundException::new);
-        if (user.getId().equals(author.getUserId())) throw new UserNotSameException();
+
+        if (!user.getId().equals(author.getUserId())) throw new UserNotSameException();
 
         boardRepository.deleteById(id);
     }

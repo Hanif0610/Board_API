@@ -31,8 +31,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .anyRequest().permitAll()
                 .and()
-                    .apply(new JwtConfigurer(jwtTokenProvider)).and()
-                    .apply(new ExceptionConfigurer());
+                    .apply(new JwtConfigurer(jwtTokenProvider));
+//                .and()
+//                    .apply(new ExceptionConfigurer());
     }
 
     @Bean
