@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Setter
 @Builder
 @Entity
 @AllArgsConstructor
@@ -35,9 +36,4 @@ public class Board {
     private List<Comment> comments = new ArrayList<>();
 
     private LocalDateTime createdAt;
-
-    public void setter(String title, String contnet) {
-        this.title = title;
-        this.content = contnet;
-    }
 }

@@ -63,6 +63,8 @@ public class BoardServiceImpl implements BoardService {
                         .build()
         );
 
+        List<Image> list = new ArrayList<>();
+
         for (MultipartFile image : boardRequest.getImages()) {
             String fileName = UUID.randomUUID().toString();
 
@@ -73,7 +75,11 @@ public class BoardServiceImpl implements BoardService {
                             .build()
             );
             image.transferTo(new File(imageDirPath, fileName));
+            list.add(new Image(board.getId(), fileName));
         }
+        board.setImages(list);
+
+        boardRepository.save(board);
     }
 
     @Override
@@ -154,7 +160,8 @@ public class BoardServiceImpl implements BoardService {
         if(!user.getId().equals(board.getAuthor()))
             throw new UserNotSameException();
 
-        board.setter(boardRequest.getTitle(), boardRequest.getContent());
+        board.setTitle(boardRequest.getTitle());
+        board.setContent(boardRequest.getContent());
 
         boardRepository.save(board);
 
