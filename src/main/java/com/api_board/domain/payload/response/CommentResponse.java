@@ -3,15 +3,16 @@ package com.api_board.domain.payload.response;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
 @Builder
-public class ReplyResponse {
+public class CommentResponse {
 
-    private Integer rno;
+    private Integer id;
 
-    private Integer bno;
+    private Integer boardId;
 
     private String writer;
 
@@ -19,5 +20,7 @@ public class ReplyResponse {
 
     private List<Integer> child_comments;
 
-    private String createAt;
+    private LocalDateTime createdAt;
+
+    private boolean inMine;
 }

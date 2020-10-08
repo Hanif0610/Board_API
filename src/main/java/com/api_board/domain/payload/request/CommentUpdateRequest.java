@@ -7,10 +7,10 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-public class ReplyUpdateRequest {
+public class CommentUpdateRequest {
 
     @NotNull
-    private Integer rno;
+    private Integer Id;
 
     @NotNull
     private String content;

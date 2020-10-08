@@ -7,12 +7,12 @@ import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
-public class ReplyRequest {
+public class CommentRequest {
 
     @NotBlank
     private String content;
 
-    private Integer bno;
+    private Integer boardId;
 
     private Integer parent_comment_id;
 
