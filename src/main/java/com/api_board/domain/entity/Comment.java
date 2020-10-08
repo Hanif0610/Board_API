@@ -7,12 +7,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Getter
-@Setter
 @Builder
-@Table
 @Entity
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Reply {
 
     @Id
