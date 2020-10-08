@@ -24,6 +24,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'com.amazonaws:aws-java-sdk-ses:1.11.807'
+
     compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.7.0'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'mysql:mysql-connector-java'
