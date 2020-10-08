@@ -3,21 +3,18 @@ package com.api_board.domain.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Setter
 @Builder
-@Table
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Board {
 
     @Id
-    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
@@ -28,17 +25,19 @@ public class Board {
     private String content;
 
     @Column(nullable = false)
-    private String author;
-
-    @Column(nullable = false)
-    private Integer userId;
+    private Integer author;
 
     @OneToMany(cascade = CascadeType.ALL)
     @OrderColumn
-    private List<File> files;
+    private List<Image> images;
 
-    @OneToMany(mappedBy = "bno", cascade = CascadeType.ALL)
-    private List<Reply> comments = new ArrayList<>();
+    @OneToMany(mappedBy = "boardId", cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
 
-    private LocalDate createDate;
+    private LocalDateTime createdAt;
+
+    public void setter(String title, String contnet) {
+        this.title = title;
+        this.content = contnet;
+    }
 }

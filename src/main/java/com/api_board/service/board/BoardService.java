@@ -10,7 +10,7 @@ public interface BoardService {
 
     void write(BoardRequest boardRequest);
     List<BoardListResponse> boardList();
-    BoardResponse getBoard(Integer id);
-    void modifyBoard(BoardRequest boardRequest, Integer id);
-    void deleteBoard(Integer id);
+    BoardResponse getBoard(Integer boardId);
+    void modifyBoard(BoardRequest boardRequest, Integer boardId);
+    void deleteBoard(Integer boardId);
 }

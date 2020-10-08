@@ -2,27 +2,18 @@ package com.api_board.domain.entity;
 
 import lombok.*;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Getter
-@Setter
 @Builder
-@Table
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class File {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Image {
 
     @Id
-    @Column
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer boardId;
 
-    @Column
-    private String uri;
-
-    @Column
-    private LocalDateTime createdAt;
-
+    private String imageName;
 }

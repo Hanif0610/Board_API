@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Integer> {
-    List<Board> findAllByOrderByCreateDateAsc();
+    List<Board> findAllByOrderByCreatedAtAsc();
     Optional<Board> findById(Integer id);
     void deleteById(Integer id);
 }

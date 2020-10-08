@@ -20,7 +20,7 @@ public class BoardController {
     private final BoardService boardService;
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping(value = "/write", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping
     public void writeBoard(@ModelAttribute @Valid BoardRequest boardRequest) {
         boardService.write(boardRequest);
     }
@@ -30,18 +30,18 @@ public class BoardController {
         return boardService.boardList();
     }
 
-    @GetMapping("/{id}")
-    public BoardResponse getBoard(@PathVariable Integer id) {
-        return boardService.getBoard(id);
+    @GetMapping("/{boardId}")
+    public BoardResponse getBoard(@PathVariable Integer boardId) {
+        return boardService.getBoard(boardId);
     }
 
-    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void modifyBoard(@ModelAttribute @Valid BoardRequest boardRequest, @PathVariable Integer id) {
-        boardService.modifyBoard(boardRequest, id);
+    @PutMapping("/{boardId}")
+    public void modifyBoard(@ModelAttribute @Valid BoardRequest boardRequest, @PathVariable Integer boardId) {
+        boardService.modifyBoard(boardRequest, boardId);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteBoard(@PathVariable Integer id) {
-        boardService.deleteBoard(id);
+    @DeleteMapping("/{boardId}")
+    public void deleteBoard(@PathVariable Integer boardId) {
+        boardService.deleteBoard(boardId);
     }
 }
