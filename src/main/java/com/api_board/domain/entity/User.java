@@ -4,26 +4,27 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Entity
 @Getter
-@Setter
-@Table
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
     @Id
-    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(length = 30)
     private String email;
 
-    @Column
+    @Column(nullable = false)
     private String password;
 
-    @Column
+    @Column(nullable = false)
     private String name;
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
