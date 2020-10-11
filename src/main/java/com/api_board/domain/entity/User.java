@@ -3,6 +3,7 @@ package com.api_board.domain.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Builder
@@ -23,6 +24,9 @@ public class User {
 
     @Column(nullable = false)
     private String name;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    private List<Board> board;
 
     public void setPassword(String password) {
         this.password = password;
