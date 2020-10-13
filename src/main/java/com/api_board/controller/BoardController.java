@@ -1,10 +1,12 @@
 package com.api_board.controller;
 
 import com.api_board.domain.payload.request.BoardRequest;
+import com.api_board.domain.payload.response.ApplicationListResponse;
 import com.api_board.domain.payload.response.BoardListResponse;
 import com.api_board.domain.payload.response.BoardResponse;
 import com.api_board.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +28,8 @@ public class BoardController {
     }
 
     @GetMapping
-    public List<BoardListResponse> boardList() {
-        return boardService.boardList();
+    public ApplicationListResponse boardList(Pageable pageable) {
+        return boardService.boardList(pageable);
     }
 
     @GetMapping("/{boardId}")

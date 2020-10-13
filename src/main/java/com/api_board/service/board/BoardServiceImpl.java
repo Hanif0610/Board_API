@@ -5,6 +5,7 @@ import com.api_board.domain.entity.Comment;
 import com.api_board.domain.entity.Image;
 import com.api_board.domain.entity.User;
 import com.api_board.domain.payload.request.BoardRequest;
+import com.api_board.domain.payload.response.ApplicationListResponse;
 import com.api_board.domain.payload.response.BoardListResponse;
 import com.api_board.domain.payload.response.BoardResponse;
 import com.api_board.domain.payload.response.CommentResponse;
@@ -20,6 +21,8 @@ import com.api_board.service.comment.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -83,23 +86,8 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<BoardListResponse> boardList() {
-        List<BoardListResponse> list = new ArrayList<>();
-
-        for (Board board : boardRepository.findAllByOrderByCreatedAtAsc()) {
-            User user = userRepository.findById(board.getAuthor())
-                    .orElseThrow(UserNotFoundException::new);
-
-            list.add(
-                    BoardListResponse.builder()
-                            .id(board.getId())
-                            .title(board.getTitle())
-                            .author(user.getName())
-                            .createdAt(board.getCreatedAt())
-                            .build()
-            );
-        }
-        return list;
+    public ApplicationListResponse boardList(Pageable pageable) {
+        return this.searchBoardList(pageable);
     }
 
     @Override
@@ -203,5 +191,32 @@ public class BoardServiceImpl implements BoardService {
         }
 
         boardRepository.deleteById(boardId);
+    }
+
+
+    private ApplicationListResponse searchBoardList(Pageable pageable) {
+        Page<Board> boardPage = boardRepository.findAllBy(pageable);
+
+        List<BoardListResponse> boardListResponses = new ArrayList<>();
+
+        for (Board board : boardPage) {
+            User writer = userRepository.findById(board.getAuthor())
+                    .orElseThrow(UserNotFoundException::new);
+
+            boardListResponses.add(
+                    BoardListResponse.builder()
+                            .id(board.getId())
+                            .title(board.getTitle())
+                            .author(writer.getName())
+                            .createdAt(board.getCreatedAt())
+                            .build()
+            );
+        }
+
+        return ApplicationListResponse.builder()
+                .totalElements((int) boardPage.getTotalElements())
+                .totalPages(boardPage.getTotalPages())
+                .applicationResponses(boardListResponses)
+                .build();
     }
 }

@@ -1,6 +1,8 @@
 package com.api_board.domain.repository;
 
 import com.api_board.domain.entity.Board;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,6 +11,8 @@ import java.util.Optional;
 
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Integer> {
+
+    Page<Board> findAllBy(Pageable pageable);
     List<Board> findAllByOrderByCreatedAtAsc();
     Optional<Board> findById(Integer id);
     void deleteById(Integer id);
